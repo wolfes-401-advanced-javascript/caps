@@ -1,0 +1,24 @@
+{
+  "name": "caps",
+  "version": "1.0.0",
+  "description": "",
+  "main": "caps.js",
+  "scripts": {
+    "test": "jest --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wolfes-401-advanced-javascript/caps.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wolfes-401-advanced-javascript/caps/issues"
+  },
+  "homepage": "https://github.com/wolfes-401-advanced-javascript/caps#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "jest": "^26.1.0"
+  }
+}
