@@ -1,26 +1,27 @@
 'use strict';
 
+require('dotenv').config();
 const events = require('./events.js');
 const faker = require('faker');
-const caps = require('./caps.js');
 
-const storeName = 'Cultural Cave';
+const storeName = process.env.STORE_NAME; 
 
-async function generateOrder() {
-  let randomName = await faker.name.findName();
-  let randomAddress = await faker.address.streetAddress();
-  let randomId = await faker.random.number();
+function generateOrder() {
+  let randomName = faker.name.findName();
+  let randomAddress = faker.address.streetAddress();
+  let randomId = faker.random.number();
 
-  let payload = await {
+  let payload =  {
     id: randomId,
     store: storeName,
     name: randomName,
     address: randomAddress,
   };
   // events.emit('cache-update', payload);
-  // events.emit('pickedUp', payload);
+  events.emit('pickup', payload);
   return payload;
 }
 
-module.exports = generateOrder;
-
+module.exports = {
+  generateOrder,
+};

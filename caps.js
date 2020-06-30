@@ -1,32 +1,23 @@
 'use strict';
 
-const EventEmitter = require('events');
 const driver = require('./driver.js');
 const vendor = require('./vendor.js');
+const events = require('./events.js');
+
+events.on('pickup', driver.pickedUp);
+events.on('inTransit', driver.inTransit);
+events.on('delivered', (payload) => { delivered(`Package ${payload.id} has been delivered`, payload); });
+
+vendor.generateOrder();
 
 
-const events = new EventEmitter();
-console.log(vendor.generateOrder);
-events.on('save', (packageReady));
-events.on('update', pickedUp);
-events.on('cache-update', (payload) => { delivered(`Package ${payload.id} has been delivered`, payload); });
 
-function packageReady(payload) {
-  console.log(`Package ${payload.id} is ready for pickup`);
-  events.emit('cache-update', payload);
-}
 
-function pickedUp(payload) {
-  console.log(`Package ${payload.id} has been picked up by driver`);
-  events.emit('cache-update', payload);
-}
 
-function delivered(event, payload) {
-  let time = new Date;
-  console.log({ event, time, payload });
-}
 
-events.emit('save', vendor.generateOrder);
-events.emit('update', vendor.generateOrder);
 
-module.exports = events;
+
+
+// module.exports = {
+//   delivered,
+// };                          
