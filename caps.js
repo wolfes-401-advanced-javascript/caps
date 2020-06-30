@@ -4,9 +4,10 @@ const EventEmitter = require('events');
 const driver = require('./driver.js');
 const vendor = require('./vendor.js');
 
-const events = new EventEmitter();
 
-events.on('save', packageReady);
+const events = new EventEmitter();
+console.log(vendor.generateOrder);
+events.on('save', (packageReady));
 events.on('update', pickedUp);
 events.on('cache-update', (payload) => { delivered(`Package ${payload.id} has been delivered`, payload); });
 
@@ -25,5 +26,7 @@ function delivered(event, payload) {
   console.log({ event, time, payload });
 }
 
-events.emit('save', { id: 100, name: 'John' });
-events.emit('update', { id: 101, name: 'Diane' });
+events.emit('save', vendor.generateOrder);
+events.emit('update', vendor.generateOrder);
+
+module.exports = events;
