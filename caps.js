@@ -5,10 +5,14 @@ const vendor = require('./vendor.js');
 const events = require('./events.js');
 
 events.on('pickup', driver.pickedUp);
-events.on('inTransit', driver.inTransit);
-events.on('delivered', (payload) => { delivered(`Package ${payload.id} has been delivered`, payload); });
+events.on('pickedUp', driver.inTransit);
+events.on('inTransit', driver.delivered);
+events.on('delivered', vendor.thanks);
 
-vendor.generateOrder();
+setInterval(() => {
+  vendor.generateOrder();
+
+}, 5000);
 
 
 

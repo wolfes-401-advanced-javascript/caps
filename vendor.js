@@ -17,11 +17,16 @@ function generateOrder() {
     name: randomName,
     address: randomAddress,
   };
-  // events.emit('cache-update', payload);
+  console.log(`Package ${payload.id} is ready for pickup.`)
   events.emit('pickup', payload);
   return payload;
 }
 
+function thanks(payload) {
+  console.log(`Thank you for delivering ${payload.id}!`);
+}
+
 module.exports = {
   generateOrder,
+  thanks,
 };

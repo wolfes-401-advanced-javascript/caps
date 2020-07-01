@@ -1,18 +1,14 @@
 'use strict';
 
 const events = require('./events.js');
-//const caps = require('./caps.js');
-
-// events.on('pickup',(payload) => {
-//   //console.log(`driver picked up ${payload.id}`);
-//   events.emit('inTransit', payload);
-//   events.emit('delivered', payload);
-// });
 
 function pickedUp(payload) {
-  console.log(`Package ${payload.id} has been picked up by driver`, payload);
+  setTimeout(() => {
   
-  events.emit('pickedUp', payload);
+    console.log(`Package ${payload.id} has been picked up by driver`, payload);
+    
+    events.emit('pickedUp', payload);
+  }, 1000);
 }
 
 function inTransit(payload) {
@@ -21,11 +17,14 @@ function inTransit(payload) {
   events.emit('inTransit', payload);
 }
 
-function delivered(event, payload) {
-  let time = new Date;
-  console.log({ event, time, payload });
+function delivered(payload) {
+  setTimeout(() => {
 
-  events.emit('delivered', time, payload);
+    console.log(`Package ${payload.id} has been delivered`, payload);
+    let time = new Date;
+      
+    events.emit('delivered', payload);
+  }, 3000);
 }
 
 module.exports = {
