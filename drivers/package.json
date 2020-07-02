@@ -1,0 +1,16 @@
+{
+  "name": "drivers",
+  "version": "1.0.0",
+  "description": "",
+  "main": "driver.js",
+  "scripts": {
+    "start": "node driver.js",
+    "watch": "nodemon driver.js",
+    "test": "jest --verbose --coverage"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^8.2.0"
+  }
+}
