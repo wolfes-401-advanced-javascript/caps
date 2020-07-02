@@ -1,7 +1,7 @@
 'use strict';
 
 const EventEmitter = require('events');
-const caps = require('./caps.js');
+const caps = require('./caps/caps.js');
 
 
 const events = new EventEmitter();
