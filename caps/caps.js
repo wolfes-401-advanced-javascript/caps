@@ -2,8 +2,6 @@
 
 const net = require('net');
 
-const driver = require('../drivers/driver.js');
-const vendor = require('../vendors/vendor.js');
 const server = net.createServer();
 
 const socketPool = {};
