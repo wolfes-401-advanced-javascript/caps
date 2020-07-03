@@ -20,7 +20,7 @@ caps.on('connection', (socket) => {
     console.log('Someone has joined room: ', room);
     socket.join(room);
   });
-  
+
   socket.on('pickup', handlePickup);
   socket.on('in-transit', handleInTransit);
   socket.on('delivered', handleDelivered);
@@ -29,7 +29,7 @@ caps.on('connection', (socket) => {
 function handlePickup(payload) {
   let time = new Date;
   console.log({ event: `Package ${payload.id} is ready for pickup`, time });
-  caps.emit('package-ready', payload);
+  caps.to('Daves Store').emit('package-ready', payload);
 }
 
 function handleInTransit(payload) {
@@ -44,10 +44,10 @@ function handleDelivered(payload) {
   caps.to(payload.vendor).emit('delivered', payload);
 }
 
-module.exports = {
-  handlePickup,
-  handleInTransit,
-  handleDelivered,
-};
+// module.exports = {
+//   handlePickup,
+//   handleInTransit,
+//   handleDelivered,
+// };
 
                    
