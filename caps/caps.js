@@ -1,52 +1,53 @@
 'use strict';
 
-const net = require('net');
+const socketIo = require('socket.io');
+require('dotenv').config();
 
-const server = net.createServer();
+const PORT = process.env.PORT || 3000;
+const io = socketIo(PORT);
 
-const socketPool = {};
+io.on('connection', (socket) => {
+  console.log('Someone has connected to the server');
 
-server.on('connection', (socket) => {
-  const id = Math.floor(Math.random() * 100000);
-  socketPool[id] = socket;
-  console.log('connected at ' + id);
-
-  socket.on('data', handleData);
-  socket.on('error', (err) => console.log('socket error', err));
-  socket.on('end', () => { delete socketPool[id]; });
-  
+  socket.on('error', (error) => console.log(error));
 });
 
-server.on('error', (error => {
-  console.log('SERVER ERROR: ', error);
-}));
+let caps = io.of('/caps');
+caps.on('connection', (socket) => {
+  console.log('Someone has connected the the caps namespace');
 
-function handleData(buffer) {
-  let data = JSON.parse(buffer.toString());
-  if (data.event && data.payload) {
-    logger(data);
-    for (let socket in socketPool) {
-      socketPool[socket].write(JSON.stringify(data));
-    }
-  }
-  return data;
-}
+  socket.on('join', room => {
+    console.log('Someone has joined room: ', room);
+    socket.join(room);
+  });
 
-function logger(data) {
-  let time = new Date();
-  let event = data.event;
-  let payload = data.payload;
-  console.log({ event: event, time, payload});
-}
-
-// driver.pickedUp();
-// server.on('pickedUp', driver.inTransit);
-// server.on('inTransit', driver.delivered);
-// server.on('delivered', vendor.thanks);
-server.listen(3000, () => {
-  console.log('Whee! We are running');
+  socket.on('pickup', handlePickup);
+  socket.on('in-transit', handleInTransit);
+  socket.on('delivered', handleDelivered);
 });
 
-module.exports = handleData;
+function handlePickup(payload) {
+  let time = new Date;
+  console.log({ event: `Package ${payload.id} is ready for pickup`, time });
+  caps.to('Daves Store').emit('package-ready', payload);
+}
+
+function handleInTransit(payload) {
+  let time = new Date;
+  console.log({ event: `Package ${payload.id} is in transit`, time });
+  caps.to(payload.vendor).emit('in-transit', payload);
+}
+
+function handleDelivered(payload) {
+  let time = new Date;
+  console.log({ event: `Package ${payload.id} has been delivered`, time, payload});
+  caps.to(payload.vendor).emit('delivered', payload);
+}
+
+// module.exports = {
+//   handlePickup,
+//   handleInTransit,
+//   handleDelivered,
+// };
 
                    
